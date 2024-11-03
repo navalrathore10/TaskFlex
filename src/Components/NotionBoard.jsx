@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 
 export default function NotionBoard() {
     return (
-        <div className='h-min min-h-screen w-full bg-neutral-900 text-neutral-50 border-white'>
+        <div className='h-min min-h-screen w-full bg-neutral-900 text-neutral-50 border-white'
+            style="overscroll-behavior: none;">
             <div className="Infoboard w-[500px] h-[100px] text-5xl flex justify-center items-center border border-red-500">
                 TaskFlex
             </div>
@@ -33,7 +34,7 @@ const Board = () => {
     return (
         <div className='grid grid-cols-5 gap-3 p-5 lg:p-12'>
             <div className="grid grid-cols-4 col-span-5 md:col-span-4 gap-3 border-white">
-                <Column 
+                <Column
                     title='Backlog'
                     column='backlog'
                     headingColor='text-red-800'
@@ -41,7 +42,7 @@ const Board = () => {
                     setCards={setCards}
                     setIsDragging={setIsDragging} // Pass the drag handler
                 />
-                <Column 
+                <Column
                     title='TODO'
                     column='todo'
                     headingColor='text-yellow-300'
@@ -49,7 +50,7 @@ const Board = () => {
                     setCards={setCards}
                     setIsDragging={setIsDragging} // Pass the drag handler
                 />
-                <Column 
+                <Column
                     title='In Progress'
                     column='doing'
                     headingColor='text-blue-300'
@@ -57,7 +58,7 @@ const Board = () => {
                     setCards={setCards}
                     setIsDragging={setIsDragging} // Pass the drag handler
                 />
-                <Column 
+                <Column
                     title='Complete'
                     column='done'
                     headingColor='text-emerald-300'
