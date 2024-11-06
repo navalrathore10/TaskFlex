@@ -7,7 +7,7 @@ export default function NotionBoard() {
     return (
         <div className='h-min min-h-screen w-full bg-neutral-900 text-neutral-50 border-white'
             style={{overscrollBehavior: 'none'}} >
-            <div className="Infoboard w-[500px] h-[100px] text-5xl flex justify-center items-center border border-red-500">
+            <div className="Infoboard md:w-[500px] h-[100px] text-5xl flex justify-center items-center border-red-500">
                 TaskFlex
             </div>
             <Board />
