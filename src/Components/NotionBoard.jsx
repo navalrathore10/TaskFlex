@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 export default function NotionBoard() {
     return (
         <div className='h-min min-h-screen w-full bg-neutral-900 text-neutral-50 border-white'
-            style="overscroll-behavior: none;">
+            style={{overscrollBehavior: 'none'}} >
             <div className="Infoboard w-[500px] h-[100px] text-5xl flex justify-center items-center border border-red-500">
                 TaskFlex
             </div>
