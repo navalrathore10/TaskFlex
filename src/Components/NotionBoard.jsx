@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 export default function NotionBoard() {
     return (
         <div className='h-min min-h-screen w-full bg-neutral-900 text-neutral-50 border-white'
-            style={{overscrollBehavior: 'none'}} >
+            style={{ overscrollBehavior: 'none' }} >
             <div className="Infoboard md:w-[500px] h-[100px] text-5xl flex justify-center items-center border-red-500">
                 TaskFlex
             </div>
@@ -30,6 +30,18 @@ const Board = () => {
         setCards(cardData ? JSON.parse(cardData) : []);
         setHasChecked(true);
     }, []);
+
+    useEffect(() => {
+        const handleTouchMove = (e) => {
+            if (isDragging) e.preventDefault();
+        };
+
+        document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
+        return () => {
+            document.removeEventListener('touchmove', handleTouchMove);
+        };
+    }, [isDragging]);
 
     return (
         <div className='grid grid-cols-5 gap-3 p-5 lg:p-12'>
@@ -219,6 +231,23 @@ const Card = ({ title, column, id, handleDragStart, setCards, cards }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editText, setEditText] = useState(title);
 
+
+    const handleTouchStart = (e) => {
+        e.dataTransfer = { setData: (key, value) => (e[key] = value) }; // Emulate `dataTransfer` for touch events
+        e.dataTransfer.setData('cardId', id);
+        handleDragStart(e, { title, id, column });
+    };
+
+    const handleTouchMove = (e) => {
+        e.preventDefault(); // Prevent scrolling while dragging
+    };
+
+    const handleTouchEnd = (e) => {
+        // Trigger drop logic
+        e.dataTransfer = { getData: (key) => e[key] }; // Emulate `dataTransfer` for touch events
+        handleDragEnd(e);
+    };
+
     // Function to handle when editing is done (Enter key or blur)
     const handleEditComplete = () => {
         if (!editText.trim()) return;
@@ -245,6 +274,9 @@ const Card = ({ title, column, id, handleDragStart, setCards, cards }) => {
                 layoutId={id}
                 draggable='true'
                 onDragStart={(e) => handleDragStart(e, { title, id, column })}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
                 onDoubleClick={() => setIsEditing(true)} // Double-click to enter edit mode
                 className='cursor-grab rounded border border-neutral-700 bg-neutral-800 p-3 py-2 lg:py-3 active:cursor-grabbing '>
 
@@ -254,7 +286,7 @@ const Card = ({ title, column, id, handleDragStart, setCards, cards }) => {
                         type='text'
                         value={editText}
                         onChange={(e) => setEditText(e.target.value)}
-                        onKeyPress={handleKeyPress}
+                        onKeyUp={handleKeyPress}
                         onBlur={handleEditComplete}
                         autoFocus
                         className='w-full bg-neutral-700 text-neutral-50 p-1 rounded outline-none'
